@@ -12,15 +12,15 @@ import { DocumentState } from "../../redux/documentReducer";
 function RecentDocsList() {
   const [recentDocList, setRecentDocList] = useState<RecentDocPropType[]>([]);
   const [isError, setIsError] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const doc = useSelector(
     (state: RootState) => state.document
   ) as DocumentState;
 
   useEffect(() => {
     const getRecentDocs = async () => {
+      setIsLoading(true);
       try {
-        console.log("Here");
-
         const response = await DocumentService.getRecentDocs("user1");
         if (response.data.success) {
           setRecentDocList(response.data.data);
@@ -31,6 +31,8 @@ function RecentDocsList() {
       } catch (err) {
         setIsError(true);
         setRecentDocList([]);
+      } finally {
+        setIsLoading(false);
       }
     };
     getRecentDocs();
@@ -62,9 +64,7 @@ function RecentDocsList() {
           margin: "0 auto",
         }}
       >
-        {isError ? (
-          <Fallback />
-        ) : recentDocList.length === 0 ? (
+        {isLoading ? ( 
           <Typography
             sx={{
               width: "80%",
@@ -73,6 +73,20 @@ function RecentDocsList() {
               textAlign: "center",
               paddingTop: "3rem",
             }}
+          >
+            Loading...
+          </Typography>
+        ) : isError ? (
+          <Fallback />
+        ) : recentDocList.length === 0 ? (
+          <Typography
+          sx={{
+            width: "80%",
+            fontSize: "0.8rem",
+            paddingLeft: "2rem",
+            textAlign: "center",
+            paddingTop: "3rem",
+          }}
           >
             No recent Docs.
           </Typography>
