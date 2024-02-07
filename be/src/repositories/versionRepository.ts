@@ -22,4 +22,9 @@ export default {
     const response = await Version.findById(id);
     return response;
   },
+
+  deleteByDocId: async (documentId: string) => {
+    const response = await Version.deleteMany({ documentId: documentId });
+    return response;
+  },
 };

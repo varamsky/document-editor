@@ -1,17 +1,16 @@
-// import { Base64 } from "js-base64";
-import mongoose from 'mongoose';
-import logger from '../logger';
-import colorRepository from '../repositories/colorRepository';
-import documentRepository from '../repositories/documentRepository';
-import templateRepository from '../repositories/templateRepository';
-import versionRepository from '../repositories/versionRepository';
+import mongoose from "mongoose";
+import logger from "../logger";
+import colorRepository from "../repositories/colorRepository";
+import documentRepository from "../repositories/documentRepository";
+import templateRepository from "../repositories/templateRepository";
+import versionRepository from "../repositories/versionRepository";
 import {
   IColor,
   TCreateTemplate,
   TDocument,
   TRestoreVersion,
   TVersionDocument,
-} from '../types';
+} from "../types";
 
 export const createDocument = async (data: TDocument) => {
   try {
@@ -23,7 +22,7 @@ export const createDocument = async (data: TDocument) => {
         return {
           status: 0,
           statusCode: 404,
-          message: 'Template not found.',
+          message: "Template not found.",
         };
       }
 
@@ -44,12 +43,12 @@ export const createDocument = async (data: TDocument) => {
         return {
           status: 0,
           statusCode: 400,
-          message: 'Failed to create document.',
+          message: "Failed to create document.",
         };
       }
     } else {
       if (!data.title) {
-        data.title = 'Untitled Document';
+        data.title = "Untitled Document";
       }
       const documentId = await documentRepository.createDoc(data);
       if (documentId) {
@@ -61,7 +60,7 @@ export const createDocument = async (data: TDocument) => {
         return {
           status: 0,
           statusCode: 400,
-          message: 'Failed to create document.',
+          message: "Failed to create document.",
         };
       }
     }
@@ -88,13 +87,13 @@ export const createVersion = async (payload: TVersionDocument) => {
       return {
         status: 2,
         statusCode: 400,
-        message: 'Document creation failed!',
+        message: "Document creation failed!",
       };
     } else {
       return {
         status: 2,
         statusCode: 400,
-        message: 'Document creation failed!',
+        message: "Document creation failed!",
       };
     }
   } catch (error: unknown) {
@@ -112,7 +111,7 @@ export const getUserDocument = async (userId: string) => {
       return {
         status: 2,
         statusCode: 404,
-        message: 'Document not found.',
+        message: "Document not found.",
       };
     }
   } catch (error: unknown) {
@@ -127,7 +126,7 @@ export const getAllVersions = async (id: string) => {
       return {
         status: 2,
         statusCode: 400,
-        message: 'Invalid Version id format.',
+        message: "Invalid Version id format.",
       };
     }
     const documents = await versionRepository.findByDocId(id);
@@ -138,7 +137,7 @@ export const getAllVersions = async (id: string) => {
       return {
         status: 2,
         statusCode: 404,
-        message: 'Version not found.',
+        message: "Version not found.",
       };
     }
   } catch (error: unknown) {
@@ -153,7 +152,7 @@ export const getVersionData = async (id: string) => {
       return {
         status: 2,
         statusCode: 400,
-        message: 'Invalid Version id format.',
+        message: "Invalid Version id format.",
       };
     }
     const versionData = await versionRepository.findById(id);
@@ -163,7 +162,7 @@ export const getVersionData = async (id: string) => {
       return {
         status: 2,
         statusCode: 404,
-        message: 'Version data not found.',
+        message: "Version data not found.",
       };
     }
   } catch (error: unknown) {
@@ -177,7 +176,7 @@ export const restoreVersion = async (requestData: TRestoreVersion) => {
     const { documentId, versionId } = requestData;
     const versionData = await versionRepository.findById(versionId);
     if (!versionData) {
-      throw new Error('No version Data found');
+      throw new Error("No version Data found");
     }
     const document = await documentRepository.update(documentId, {
       data: versionData.data,
@@ -190,7 +189,7 @@ export const restoreVersion = async (requestData: TRestoreVersion) => {
       return {
         status: 2,
         statusCode: 400,
-        message: 'Failed to restore version.',
+        message: "Failed to restore version.",
       };
     }
   } catch (error: unknown) {
@@ -211,7 +210,7 @@ export const createTemplate = async (payload: TCreateTemplate) => {
     return {
       status: 2,
       statusCode: 400,
-      message: 'Failed to create template',
+      message: "Failed to create template",
     };
   } catch (error: unknown) {
     logger.error(`Error in createTemplate service : `, error);
@@ -231,7 +230,7 @@ export const getTemplate = async () => {
     return {
       status: 2,
       statusCode: 404,
-      message: 'Tempate not found',
+      message: "Tempate not found",
     };
   } catch (error: unknown) {
     logger.error(`Error in getTemplate service : `, error);
@@ -245,7 +244,7 @@ export const updateTitle = async (documentId: string, title: string) => {
       return {
         status: 2,
         statusCode: 400,
-        message: 'Invalid document id format.',
+        message: "Invalid document id format.",
       };
     }
     const document = await documentRepository.findById(documentId);
@@ -253,7 +252,7 @@ export const updateTitle = async (documentId: string, title: string) => {
       return {
         status: 2,
         statusCode: 404,
-        message: 'Document not found.',
+        message: "Document not found.",
       };
     }
 
@@ -270,7 +269,7 @@ export const updateTitle = async (documentId: string, title: string) => {
       return {
         status: 2,
         statusCode: 400,
-        message: 'Document updation failed.',
+        message: "Document updation failed.",
       };
     }
   } catch (error: unknown) {
@@ -285,7 +284,7 @@ export const updateImage = async (templateId: string, image: string) => {
       return {
         status: 2,
         statusCode: 400,
-        message: 'Invalid template id format.',
+        message: "Invalid template id format.",
       };
     }
     const template = await templateRepository.findById(templateId);
@@ -293,7 +292,7 @@ export const updateImage = async (templateId: string, image: string) => {
       return {
         status: 2,
         statusCode: 404,
-        message: 'template not found.',
+        message: "template not found.",
       };
     }
 
@@ -310,7 +309,7 @@ export const updateImage = async (templateId: string, image: string) => {
       return {
         status: 2,
         statusCode: 400,
-        message: 'Template updation failed.',
+        message: "Template updation failed.",
       };
     }
   } catch (error: unknown) {
@@ -325,15 +324,27 @@ export const removeDoc = async (documentId: string) => {
       return {
         status: 2,
         statusCode: 400,
-        message: 'Invalid document id format.',
+        message: "Invalid document id format.",
       };
     }
+
+    const deleteAllVersionsResponse = await versionRepository.deleteByDocId(
+      documentId
+    );
+    if (!deleteAllVersionsResponse) {
+      return {
+        status: 2,
+        statusCode: 404,
+        message: "Error in deleting versions for the document.",
+      };
+    }
+
     const document = await documentRepository.removeById(documentId);
     if (!document) {
       return {
         status: 2,
         statusCode: 404,
-        message: 'Document not found.',
+        message: "Document not found.",
       };
     }
     return { status: true };
@@ -360,7 +371,7 @@ export const createColor = async (payload: IColor) => {
         return {
           status: 2,
           statusCode: 400,
-          message: 'Failed to update colors',
+          message: "Failed to update colors",
         };
       }
     } else {
@@ -372,7 +383,7 @@ export const createColor = async (payload: IColor) => {
         return {
           status: 2,
           statusCode: 400,
-          message: 'Failed to create colors',
+          message: "Failed to create colors",
         };
       }
     }
@@ -388,7 +399,7 @@ export const retrieveAllColor = async (documentId: string) => {
       return {
         status: 2,
         statusCode: 400,
-        message: 'Invalid document id format.',
+        message: "Invalid document id format.",
       };
     }
     const documents = await colorRepository.findAll(documentId);
@@ -398,7 +409,7 @@ export const retrieveAllColor = async (documentId: string) => {
       return {
         status: 2,
         statusCode: 400,
-        message: 'Failed to retrieve records.',
+        message: "Failed to retrieve records.",
       };
     }
   } catch (error: unknown) {
@@ -413,7 +424,7 @@ export const updateMargins = async (documentId: string, margins: number[]) => {
       return {
         status: 2,
         statusCode: 400,
-        message: 'Invalid document id format.',
+        message: "Invalid document id format.",
       };
     }
     const document = await documentRepository.findById(documentId);
@@ -421,7 +432,7 @@ export const updateMargins = async (documentId: string, margins: number[]) => {
       return {
         status: 2,
         statusCode: 404,
-        message: 'Document not found.',
+        message: "Document not found.",
       };
     }
 
@@ -438,7 +449,7 @@ export const updateMargins = async (documentId: string, margins: number[]) => {
       return {
         status: 2,
         statusCode: 400,
-        message: 'Document updation failed.',
+        message: "Document updation failed.",
       };
     }
   } catch (error: unknown) {
