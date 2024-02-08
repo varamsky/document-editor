@@ -126,7 +126,7 @@ export default function Version() {
     const editorOptions = {
       height: 1056,
       width: 816,
-      mode: EditorMode.EDIT,
+      mode: EditorMode.READONLY,
       pageMode: PageMode.PAGING,
       pageNumber: {
         format: "{pageNo}/{pageCount}",

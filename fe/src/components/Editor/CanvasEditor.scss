@@ -14,8 +14,11 @@
   margin: auto;
 }
 
-.canvas-editor-version {
-  position: relative;
-  border-left: 1px solid rgba(0, 0, 0, 0.3);
-  border-top: 1px solid rgba(0, 0, 0, 0.3);
+/*
+The canvas border created a blur effect on the document in the versions page.
+Removing the border fixes that issue.
+Please note that for this we are dependent on third-party css-classnames and parent-child placements(div .ce-page-container canvas)
+*/
+.canvas-editor-version div .ce-page-container canvas {
+  border: none;
 }
