@@ -36,8 +36,11 @@ const SaveAsTemplateButton = forwardRef<HTMLDivElement>(function TemplateButton(
     if (ref && 'current' in ref && ref.current) {
       try {
         const canvas = ref.current;
-        console.log(canvas);
-        const screenshot = await html2canvas(canvas);
+        const container = document.querySelector(
+          '.ce-page-container'
+        ) as HTMLDivElement;
+        const FirstPage = container.querySelector("canvas[data-index='0']") as HTMLDivElement;
+        const screenshot = await html2canvas(FirstPage);
 
         const data = screenshot.toDataURL('image/png');
         setImage(data);

@@ -66,7 +66,13 @@ export default function TemplateCard({
               component="img"
               alt="Base64 Image"
               image={template.image}
-              sx={[{ maxHeight: 129, height: 129 }]}
+              sx={[
+                {
+                  maxHeight: 129,
+                  width: 'auto',
+                  objectPosition: 'top',
+                },
+              ]}
             />
           ) : (
             skeleton
