@@ -2,14 +2,23 @@ import React, { forwardRef, useEffect, useState } from 'react';
 import SaveAsIcon from '@mui/icons-material/SaveAs';
 import { DOMEventHandlers } from '@mindfiredigital/canvas-editor';
 import html2canvas from 'html2canvas';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { DocumentService } from '../../services/documentService';
 import { RootState } from '../../redux/store';
-import { DocumentState } from '../../redux/documentReducer';
+import { DocumentState, setIsDocumentSaveLoading } from '../../redux/documentReducer';
 import ButtonWrapper from '../ButtonWrapper/ButtonWrapper';
+import { CustomSnackbarType } from '../../utils/types';
+import { MSGSEVERITY } from '../../utils/constant';
 
-const SaveAsTemplateButton = forwardRef<HTMLDivElement>(function TemplateButton(
-  _props,
+interface SaveAsTemplateButtonProps {
+  setOpenDocSaveSnackbar: React.Dispatch<
+    React.SetStateAction<CustomSnackbarType>
+  >;
+}
+
+
+const SaveAsTemplateButton = forwardRef<HTMLDivElement, SaveAsTemplateButtonProps>(function TemplateButton(
+  props: SaveAsTemplateButtonProps,
   ref
 ) {
   const [image, setImage] = useState<string | null>(null);
@@ -17,6 +26,7 @@ const SaveAsTemplateButton = forwardRef<HTMLDivElement>(function TemplateButton(
   const doc = useSelector(
     (state: RootState) => state.document
   ) as DocumentState;
+  const dispatch = useDispatch();
 
   useEffect(() => {
     //save image
@@ -51,6 +61,7 @@ const SaveAsTemplateButton = forwardRef<HTMLDivElement>(function TemplateButton(
   };
 
   const handleClick = () => {
+    dispatch(setIsDocumentSaveLoading({ isDocumentSaveLoading: true }));
     const content = DOMEventHandlers.getContent();
     if (content) {
       handleScreenshot();
@@ -61,9 +72,21 @@ const SaveAsTemplateButton = forwardRef<HTMLDivElement>(function TemplateButton(
       }).then(
         (resp) => {
           setTemplateId(resp.data.data);
+          dispatch(setIsDocumentSaveLoading({ isDocumentSaveLoading: false }));
+          props.setOpenDocSaveSnackbar({
+            visibility: true,
+            message: "Template Saved",
+            severity: MSGSEVERITY.SUCCESS,
+          });
         },
         (err) => {
           console.log(err);
+          dispatch(setIsDocumentSaveLoading({ isDocumentSaveLoading: false }));
+          props.setOpenDocSaveSnackbar({
+            visibility: true,
+            message: "Error while saving template",
+            severity: MSGSEVERITY.ERROR,
+          });
         }
       );
     }

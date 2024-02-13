@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 export interface DocumentState {
   documentId: string;
@@ -6,6 +6,7 @@ export interface DocumentState {
   reloadRecentDoc: boolean;
   margins: number[];
   isUnderLine: boolean;
+  isDocumentSaveLoading: boolean;
 }
 
 const initialState = {
@@ -14,6 +15,7 @@ const initialState = {
   reloadRecentDoc: false,
   margins: [],
   isUnderLine: false,
+  isDocumentSaveLoading: false, // used for both document and template save loading
 } as DocumentState;
 
 const docSlice = createSlice({
@@ -35,6 +37,9 @@ const docSlice = createSlice({
     setIsUnderLine: (state, action) => {
       state.isUnderLine = action.payload.isUnderLine;
     },
+    setIsDocumentSaveLoading: (state, action) => {
+      state.isDocumentSaveLoading = action.payload.isDocumentSaveLoading;
+    },
   },
 });
 
@@ -44,5 +49,6 @@ export const {
   setDocumentId,
   setDocumentMargins,
   setIsUnderLine,
+  setIsDocumentSaveLoading,
 } = docSlice.actions;
 export default docSlice.reducer;

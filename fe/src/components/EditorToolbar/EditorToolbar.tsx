@@ -1,44 +1,54 @@
-import React, { forwardRef, useEffect, useState } from 'react';
+import React, { forwardRef, useEffect, useState } from "react";
 
-import Box from '@mui/material/Box';
-import AppBar from '@mui/material/AppBar';
-import FormatBoldIcon from '@mui/icons-material/FormatBold';
+import Box from "@mui/material/Box";
+import AppBar from "@mui/material/AppBar";
+import FormatBoldIcon from "@mui/icons-material/FormatBold";
 import {
   DOMEventHandlers,
   ListStyle,
   ListType,
   RowFlex,
-} from '@mindfiredigital/canvas-editor';
-import ButtonWrapper from '../ButtonWrapper/ButtonWrapper';
-import FormatItalicIcon from '@mui/icons-material/FormatItalic';
-import { Stack } from '@mui/material';
-import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
-import FormatAlignCenterIcon from '@mui/icons-material/FormatAlignCenter';
-import FormatAlignRightIcon from '@mui/icons-material/FormatAlignRight';
-import FormatAlignJustifyIcon from '@mui/icons-material/FormatAlignJustify';
-import UndoIcon from '@mui/icons-material/Undo';
-import RedoIcon from '@mui/icons-material/Redo';
-import FormatUnderlinedIcon from '@mui/icons-material/FormatUnderlined';
-import SubscriptIcon from '@mui/icons-material/Subscript';
-import SuperscriptIcon from '@mui/icons-material/Superscript';
-import StrikethroughSIcon from '@mui/icons-material/StrikethroughS';
-import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
-import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
-import FontDropdown from '../Dropdown/FontDropdown';
-import TableDropdown from '../Table/TableDropdown';
-import ExportToPdf from '../ExportToPdf/ExportToPdf';
-import FontColorButton from '../FontColorButton/FontColorButton';
-import HighlightTextButton from '../HighlightTextButton/HighlightTextButton';
-import FontSizeButton from '../FontSizeButton/FontSizeButton';
-import HeadingButton from '../HeadingButton/HeadingButton';
-import { IRangeStyle } from '@mindfiredigital/canvas-editor/dist/src/editor/interface/Listener';
-import InsertLinkIcon from '@mui/icons-material/InsertLink';
-import ImageUploadButton from '../ImageUploadButton/ImageUploadButton';
-import Separator from '../Separator/Separator';
-import SaveAsTemplateButton from '../SaveAsTemplateButton/SaveAsTemplateButton';
-import SaveAsDocumentButton from '../SaveAsDocumentButton/SaveAsDocumentButton';
+} from "@mindfiredigital/canvas-editor";
+import ButtonWrapper from "../ButtonWrapper/ButtonWrapper";
+import FormatItalicIcon from "@mui/icons-material/FormatItalic";
+import { Stack } from "@mui/material";
+import FormatAlignLeftIcon from "@mui/icons-material/FormatAlignLeft";
+import FormatAlignCenterIcon from "@mui/icons-material/FormatAlignCenter";
+import FormatAlignRightIcon from "@mui/icons-material/FormatAlignRight";
+import FormatAlignJustifyIcon from "@mui/icons-material/FormatAlignJustify";
+import UndoIcon from "@mui/icons-material/Undo";
+import RedoIcon from "@mui/icons-material/Redo";
+import FormatUnderlinedIcon from "@mui/icons-material/FormatUnderlined";
+import SubscriptIcon from "@mui/icons-material/Subscript";
+import SuperscriptIcon from "@mui/icons-material/Superscript";
+import StrikethroughSIcon from "@mui/icons-material/StrikethroughS";
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
+import FontDropdown from "../Dropdown/FontDropdown";
+import TableDropdown from "../Table/TableDropdown";
+import ExportToPdf from "../ExportToPdf/ExportToPdf";
+import FontColorButton from "../FontColorButton/FontColorButton";
+import HighlightTextButton from "../HighlightTextButton/HighlightTextButton";
+import FontSizeButton from "../FontSizeButton/FontSizeButton";
+import HeadingButton from "../HeadingButton/HeadingButton";
+import { IRangeStyle } from "@mindfiredigital/canvas-editor/dist/src/editor/interface/Listener";
+import InsertLinkIcon from "@mui/icons-material/InsertLink";
+import ImageUploadButton from "../ImageUploadButton/ImageUploadButton";
+import Separator from "../Separator/Separator";
+import SaveAsTemplateButton from "../SaveAsTemplateButton/SaveAsTemplateButton";
+import SaveAsDocumentButton from "../SaveAsDocumentButton/SaveAsDocumentButton";
+import { CustomSnackbarType } from "../../utils/types";
 
-const EditorToolbar = forwardRef<HTMLDivElement>(function Toolbar(_props, ref) {
+interface EditorToolbarProps {
+  setOpenDocSaveSnackbar: React.Dispatch<
+    React.SetStateAction<CustomSnackbarType>
+  >;
+}
+
+const EditorToolbar = forwardRef<HTMLDivElement, EditorToolbarProps>(function Toolbar(
+  props: EditorToolbarProps,
+  ref
+) {
   const [contentStyles, setContentStyles] = useState<IRangeStyle | undefined>();
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -61,19 +71,19 @@ const EditorToolbar = forwardRef<HTMLDivElement>(function Toolbar(_props, ref) {
         position="fixed"
         sx={{
           top: 65,
-          backgroundColor: '#edf2fa',
-          border: 'none',
-          minHeight: '40px',
-          boxShadow: 'none',
+          backgroundColor: "#edf2fa",
+          border: "none",
+          minHeight: "40px",
+          boxShadow: "none",
         }}
       >
         <Stack
           sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            minHeight: '40px',
-            justifyContent: 'center',
-            alignItems: 'center',
+            display: "flex",
+            flexDirection: "row",
+            minHeight: "40px",
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
           <ButtonWrapper title="undo" handleClick={DOMEventHandlers.handleUndo}>
@@ -169,9 +179,11 @@ const EditorToolbar = forwardRef<HTMLDivElement>(function Toolbar(_props, ref) {
             <InsertLinkIcon />
           </ButtonWrapper>
           <ImageUploadButton />
-          <SaveAsDocumentButton />
+          <SaveAsDocumentButton
+            setOpenDocSaveSnackbar={props.setOpenDocSaveSnackbar}
+          />
           <Separator />
-          <SaveAsTemplateButton ref={ref} />
+          <SaveAsTemplateButton ref={ref} setOpenDocSaveSnackbar={props.setOpenDocSaveSnackbar}/>
         </Stack>
       </AppBar>
     </Box>

@@ -15,6 +15,7 @@ import { DocumentState, setDocumentTitle } from "../../redux/documentReducer";
 import { DocumentService } from "../../services/documentService";
 import { useDebounce } from "../../hooks/useDebounce";
 import "./EditorHeader.scss";
+import AutorenewIcon from "@mui/icons-material/Autorenew";
 
 export default function EditorHeader() {
   const navigate = useNavigate();
@@ -30,8 +31,6 @@ export default function EditorHeader() {
     const updateTitle = async () => {
       try {
         if (documentId && title) {
-          console.log('editor header ln 33', documentId, title);
-          
           await DocumentService.updateTitle({
             documentId,
             title,
@@ -93,6 +92,11 @@ export default function EditorHeader() {
                 value={document.title}
                 onChange={handleChange}
               />
+              {document.isDocumentSaveLoading ? (
+                <Tooltip title="Saving Document..">
+                  <AutorenewIcon sx={{ mx: 2 }} />
+                </Tooltip>
+              ) : null}
               <Tooltip title="See version history">
                 <IconButton
                   size="medium"
